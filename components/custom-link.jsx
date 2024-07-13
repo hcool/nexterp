@@ -1,8 +1,21 @@
 import CustomLink from "@/components/custom-link";
 import { auth } from "auth";
+import React, { useState, useEffect } from "react";
 
-export default async function Index() {
-  const session = await auth();
+function Index() {
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    async function fetchSession() {
+      try {
+        const sessionData = await auth();
+        setSession(sessionData);
+      } catch (error) {
+        console.error("Errore nel recupero della sessione:", error);
+      }
+    }
+    fetchSession();
+  }, []);
 
   return (
     <div className='flex flex-col gap-6'>
@@ -36,3 +49,5 @@ export default async function Index() {
     </div>
   );
 }
+
+export default Index;
